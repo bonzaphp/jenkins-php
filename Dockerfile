@@ -13,6 +13,7 @@ RUN apt-get update \
 && apt-get -y -f install php7.2-cli php7.2-curl php7.2-dev curl php-pear \
 # 清理缓存，减小镜像大小
 && apt-get clean -y
-
+#添加composer命令到容器中
+COPY composer.phar /usr/local/bin/composer
 # 返回Jenkins用户
 USER jenkins
