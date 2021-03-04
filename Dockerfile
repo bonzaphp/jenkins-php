@@ -12,7 +12,7 @@ RUN apt-get update \
 && apt-get update \
 && apt-get -y -f install php7.2-cli php7.2-curl php7.2-dev curl php-pear php-xml php7.2-xml dialog\
 # 清理缓存，减小镜像大小
-&& apt-get clean -y
+&& apt-get clean -y \
 # 安装swoole扩展
 && pecl install swoole
 #添加composer命令到容器中
