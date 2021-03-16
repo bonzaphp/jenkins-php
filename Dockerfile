@@ -5,8 +5,12 @@ USER root
 
 ENV DEBIAN_FRONTEND noninteractive
 
+
 RUN  mv /etc/apt/sources.list /etc/apt/sources.list.bak
 COPY $PWD/sources.list /etc/apt/
+
+#添加composer命令到容器中
+COPY composer.phar /usr/local/bin/composer
 # 安装PHP相关软件包
 RUN apt-get update \
 && apt -y install software-properties-common apt-transport-https lsb-release ca-certificates \
@@ -19,8 +23,10 @@ RUN apt-get update \
 # 清理缓存，减小镜像大小
 && apt-get clean -y \
 # 安装swoole扩展
-&& pecl install swoole
-#添加composer命令到容器中
-COPY composer.phar /usr/local/bin/composer
+&& pecl install swoole \
+# 编辑php.ini文件
+&& echo extension=swoole.so >> /etc/php/7.2/cli/php.ini \
+# 给composer文件添加执行权限
+&& chmod +x /usr/local/bin/composer
 # 返回Jenkins用户
 USER jenkins
